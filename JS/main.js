@@ -5,6 +5,23 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
+  // EDUCATION BENTO — tilt effect on hover
+  // ==========================================
+  document.querySelectorAll('.bento-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const rotX = ((e.clientY - rect.top  - rect.height / 2) / (rect.height / 2)) * -4;
+      const rotY = ((e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2)) *  4;
+      card.style.transform  = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-5px)`;
+      card.style.transition = 'transform 0.08s ease';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform  = 'perspective(900px) rotateX(0) rotateY(0) translateY(0)';
+      card.style.transition = 'transform 0.5s ease';
+    });
+  });
+  
+  // ==========================================
   // CUSTOM CURSOR
   // ==========================================
   const cursorEl   = document.createElement('div');
