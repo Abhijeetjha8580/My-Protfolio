@@ -1574,6 +1574,10 @@ section {
   border-radius: 10px;
 }
 
+/* ============================================
+   EDUCATION SECTION — BENTO GRID
+   (Replace your entire old education CSS block with this)
+   ============================================ */
 .education {
   padding: 7rem 8vw;
   background: var(--bg-secondary);
@@ -1584,7 +1588,6 @@ section {
   margin-bottom: 4rem;
 }
 
-/* Bento grid layout */
 .bento-grid {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -1594,7 +1597,7 @@ section {
   margin: 0 auto;
 }
 
-/* Base card */
+/* ── Base card ── */
 .bento-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -1611,7 +1614,7 @@ section {
   transform: translateY(-5px);
 }
 
-/* Purple glow blob that appears on hover */
+/* Purple glow blob on hover */
 .bento-card::after {
   content: '';
   position: absolute;
@@ -1627,7 +1630,15 @@ section {
 }
 .bento-card:hover::after { opacity: 1; }
 
-/* Featured (big) card — spans 2 rows */
+/* Light mode base card subtle shadow */
+[data-theme="light"] .bento-card {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+[data-theme="light"] .bento-card:hover {
+  box-shadow: 0 20px 60px var(--accent-glow);
+}
+
+/* ── Featured card (B.Tech) — spans 2 rows ── */
 .bento-card.featured {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -1635,11 +1646,21 @@ section {
   flex-direction: column;
   justify-content: space-between;
   min-height: 300px;
-  background: linear-gradient(145deg, #1a0a2e 0%, #1a1a1a 100%);
-  border-color: rgba(176,38,255,0.25);
+  border-color: rgba(176,38,255,0.3);
 }
 
-/* Ghost big year in corner */
+/* DARK MODE: deep purple-black gradient */
+[data-theme="dark"] .bento-card.featured {
+  background: linear-gradient(145deg, #1a0a2e 0%, #1a1a1a 100%);
+}
+
+/* LIGHT MODE: soft lavender gradient — text fully visible */
+[data-theme="light"] .bento-card.featured {
+  background: linear-gradient(145deg, #ede0ff 0%, #f5f0ff 100%);
+  border-color: rgba(176,38,255,0.35);
+}
+
+/* ── Ghost big year in corner ── */
 .bento-year-big {
   font-family: 'Bebas Neue', cursive;
   font-size: clamp(5rem, 9vw, 8rem);
@@ -1653,12 +1674,18 @@ section {
   user-select: none;
   transition: -webkit-text-stroke 0.4s;
 }
+
+[data-theme="light"] .bento-year-big {
+  -webkit-text-stroke: 1px rgba(176,38,255,0.35);
+}
+
 .bento-card.featured:hover .bento-year-big {
-  -webkit-text-stroke: 1px rgba(176,38,255,0.45);
+  -webkit-text-stroke: 1px rgba(176,38,255,0.55);
 }
 
 .bento-top { position: relative; z-index: 1; }
 
+/* ── Typography ── */
 .bento-eyebrow {
   font-family: 'Space Mono', monospace;
   font-size: 0.6rem;
@@ -1685,6 +1712,7 @@ section {
   margin-bottom: 1.4rem;
 }
 
+/* ── Tags ── */
 .bento-tags {
   display: flex;
   gap: 0.5rem;
@@ -1704,7 +1732,7 @@ section {
   text-transform: uppercase;
 }
 
-/* Divider line inside smaller cards */
+/* ── Divider in smaller cards ── */
 .bento-divider {
   width: 40px;
   height: 2px;
@@ -1715,7 +1743,7 @@ section {
 }
 .bento-card:hover .bento-divider { width: 70px; }
 
-/* Big percentage stat */
+/* ── Big percentage stat ── */
 .bento-stat {
   font-family: 'Bebas Neue', cursive;
   font-size: clamp(2.5rem, 4vw, 3.5rem);
@@ -1733,7 +1761,7 @@ section {
   text-transform: uppercase;
 }
 
-/* Active / currently enrolled pill */
+/* ── Green active pill ── */
 .current-pill {
   display: inline-flex;
   align-items: center;
@@ -1779,4 +1807,97 @@ section {
 @media (max-width: 480px) {
   .education { padding-left: 5vw; padding-right: 5vw; }
   .bento-year-big { font-size: 4rem; }
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+/* Big initials */
+.preloader-initials {
+  display: flex;
+  gap: 0.1em;
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(5rem, 15vw, 9rem);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.pre-a {
+  color: var(--text-primary);
+  animation: preLetterIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.1s;
+}
+
+.pre-j {
+  color: var(--accent);
+  animation: preLetterIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.25s;
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+
+@keyframes preLetterIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.8);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Progress bar */
+.preloader-bar {
+  width: clamp(160px, 30vw, 260px);
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.preloader-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 2px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Loading text */
+.preloader-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  animation: preTextBlink 1s ease-in-out infinite;
+}
+
+@keyframes preTextBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
 }

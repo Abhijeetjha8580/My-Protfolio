@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abhijeet Jha — Portfolio</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -11,6 +15,18 @@
   <link rel="stylesheet" href="css/animations.css" />
 </head>
 <body>
+
+  <div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-initials">
+      <span class="pre-a">A</span><span class="pre-j">J</span>
+    </div>
+    <div class="preloader-bar">
+      <div class="preloader-fill" id="preloaderFill"></div>
+    </div>
+    <p class="preloader-text" id="preloaderText">Loading...</p>
+  </div>
+</div>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
@@ -199,6 +215,8 @@
       </div>
     </div>
   </section>
+
+   <!-- <li><a href="#education">Education</a></li> -->
 
   <!-- ===== Education SECTION ===== -->
   <section class="education" id="education">

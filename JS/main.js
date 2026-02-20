@@ -2,6 +2,51 @@
 //  MAIN.JS — Cursor, Nav, Scroll, Form & More
 // ============================================
 
+// ==========================================
+// PAGE PRELOADER
+// ==========================================
+(function () {
+  const preloader = document.getElementById('preloader');
+  const fill      = document.getElementById('preloaderFill');
+  const text      = document.getElementById('preloaderText');
+
+  if (!preloader) return;
+
+  const messages = ['Loading...', 'Almost there...', 'Ready!'];
+  let progress = 0;
+
+  const interval = setInterval(() => {
+    // Speed up towards the end
+    const step = progress < 60 ? 3 : progress < 85 ? 1.5 : 0.8;
+    progress = Math.min(progress + step, 100);
+
+    if (fill) fill.style.width = progress + '%';
+
+    if (progress >= 40  && text) text.textContent = messages[0];
+    if (progress >= 75  && text) text.textContent = messages[1];
+    if (progress >= 100 && text) text.textContent = messages[2];
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        // Re-enable scroll (was locked during load)
+        document.body.style.overflow = '';
+      }, 400);
+    }
+  }, 30);
+
+  // Lock scroll while loading
+  document.body.style.overflow = 'hidden';
+
+  // Safety net — force hide after 4s no matter what
+  setTimeout(() => {
+    clearInterval(interval);
+    preloader.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, 4000);
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
