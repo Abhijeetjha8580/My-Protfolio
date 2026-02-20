@@ -1901,3 +1901,404 @@ section {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+
+/* ============================================
+   CURSOR TRAIL PARTICLES
+   ============================================ */
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9997;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: trailFade 0.6s ease-out forwards;
+}
+
+@keyframes trailFade {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+/* ============================================
+   CASE STUDY MODAL SYSTEM
+   Paste at bottom of css/style.css
+   ============================================ */
+
+.cs-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 5000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem 4rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.cs-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cs-modal-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-hover);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 880px;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(50px) scale(0.96);
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+  margin-top: 2rem;
+}
+
+.cs-modal-overlay.open .cs-modal-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* top accent gradient line */
+.cs-modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-light), transparent);
+  z-index: 2;
+}
+
+/* close button */
+.cs-modal-close {
+  position: absolute;
+  top: 1.2rem; right: 1.2rem;
+  width: 40px; height: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: border-color 0.3s, color 0.3s, transform 0.3s, background 0.3s;
+}
+.cs-modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(176,38,255,0.1);
+  transform: rotate(90deg);
+}
+
+/* scroll progress bar */
+.cs-scroll-bar {
+  position: sticky;
+  top: 0; height: 2px;
+  background: var(--border);
+  z-index: 5;
+}
+.cs-scroll-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  box-shadow: 0 0 8px var(--accent-glow);
+  transition: width 0.08s linear;
+}
+
+/* hero banner */
+.cs-modal-hero {
+  width: 100%; height: 240px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #120520 0%, #0e0e0e 60%, #1a1018 100%);
+}
+
+.cs-hero-bg-text {
+  position: absolute;
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(4rem, 11vw, 9rem);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(176,38,255,0.12);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  animation: heroBgDrift 20s ease-in-out infinite alternate;
+}
+@keyframes heroBgDrift {
+  from { transform: translateX(-2%); }
+  to   { transform: translateX(2%);  }
+}
+
+.cs-hero-mockup {
+  position: relative; z-index: 2;
+  width: clamp(240px, 52%, 400px);
+  aspect-ratio: 16/10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(176,38,255,0.3);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 40px var(--accent-glow);
+  transform: perspective(900px) rotateX(4deg);
+  transition: transform 0.4s ease;
+}
+.cs-modal-panel:hover .cs-hero-mockup {
+  transform: perspective(900px) rotateX(0deg);
+}
+.cs-hero-mockup img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  display: block;
+}
+.cs-hero-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem; letter-spacing: 0.2em;
+  color: rgba(176,38,255,0.4);
+  background: linear-gradient(135deg, #200840, #0e0e0e);
+}
+
+/* modal body */
+.cs-modal-body { padding: 2.5rem 2.8rem 2rem; }
+
+.cs-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.cs-project-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.22em;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.cs-modal-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: 0.04em; line-height: 1.05;
+  color: var(--text-primary);
+}
+
+.cs-modal-tags {
+  display: flex; gap: 0.5rem;
+  flex-wrap: wrap; margin-top: 0.8rem;
+}
+.cs-modal-tags span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 3px; color: var(--accent);
+}
+
+/* stats row */
+.cs-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1rem; margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.cs-stat-item { text-align: center; }
+.cs-stat-value {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2rem; color: var(--accent);
+  letter-spacing: 0.05em; line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.cs-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.54rem; color: var(--text-muted);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* section label */
+.cs-label {
+  display: flex; align-items: center; gap: 0.8rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.22em;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+.cs-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--border);
+}
+
+.cs-section { margin-bottom: 2.2rem; }
+.cs-section h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 0.6rem;
+}
+.cs-section p {
+  font-size: 0.85rem; line-height: 1.82;
+  color: var(--text-secondary);
+}
+
+/* process steps */
+.cs-steps { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.4rem; }
+.cs-step  { display: flex; gap: 1.2rem; align-items: flex-start; }
+.cs-step-num {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: rgba(176,38,255,0.12);
+  border: 1px solid rgba(176,38,255,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; color: var(--accent); margin-top: 3px;
+}
+.cs-step-content strong {
+  display: block;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.84rem; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 0.2rem;
+}
+.cs-step-content p {
+  font-size: 0.8rem; line-height: 1.72;
+  color: var(--text-secondary); margin: 0;
+}
+
+/* tools chips */
+.cs-tools { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
+.cs-tool {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  transition: border-color 0.25s, color 0.25s;
+}
+.cs-tool:hover { border-color: var(--accent); color: var(--accent); }
+.cs-tool-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0;
+}
+
+/* result box */
+.cs-result-box {
+  background: linear-gradient(135deg, rgba(176,38,255,0.07), rgba(176,38,255,0.02));
+  border: 1px solid rgba(176,38,255,0.22);
+  border-radius: 12px; padding: 1.4rem 1.7rem; margin-top: 0.5rem;
+}
+.cs-result-box p { font-size: 0.85rem; line-height: 1.82; color: var(--text-secondary); }
+.cs-result-box strong { color: var(--accent-light); }
+
+/* learnings chips */
+.cs-learnings { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
+.cs-chip {
+  padding: 5px 14px;
+  background: rgba(176,38,255,0.07);
+  border: 1px solid rgba(176,38,255,0.2);
+  border-radius: 20px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.74rem; font-weight: 600;
+  color: var(--accent-light);
+  transition: background 0.25s, border-color 0.25s;
+}
+.cs-chip:hover {
+  background: rgba(176,38,255,0.15);
+  border-color: rgba(176,38,255,0.5);
+}
+
+/* status badge */
+.cs-status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.1em;
+  padding: 4px 12px; border-radius: 20px; margin-top: 0.8rem;
+}
+.cs-status-badge.wip {
+  color: #ffc947;
+  border: 1px solid rgba(255,201,71,0.3);
+  background: rgba(255,201,71,0.07);
+}
+.cs-status-badge.wip::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: #ffc947;
+  animation: wipPulse 1.5s ease-in-out infinite;
+}
+@keyframes wipPulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%     { opacity:0.4; transform:scale(0.8); }
+}
+
+/* modal footer */
+.cs-modal-footer {
+  padding: 1.4rem 2.8rem 2rem;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 1rem;
+  align-items: center; flex-wrap: wrap;
+}
+
+.cs-btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 24px; background: var(--accent);
+  border: none; color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  border-radius: 4px; cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+.cs-btn-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.cs-btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; background: transparent;
+  border: 1.5px solid var(--border-hover); color: var(--text-primary);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  border-radius: 4px; cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.3s, background 0.3s, transform 0.2s;
+}
+.cs-btn-secondary:hover {
+  border-color: var(--accent);
+  background: rgba(176,38,255,0.07);
+  transform: translateY(-2px);
+}
+
+.cs-footer-esc {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.56rem; color: var(--text-muted); letter-spacing: 0.1em;
+}
+
+/* responsive */
+@media (max-width: 640px) {
+  .cs-modal-body   { padding: 1.6rem 1.3rem 1.5rem; }
+  .cs-modal-footer { padding: 1.2rem 1.3rem; }
+  .cs-stats-row    { grid-template-columns: repeat(2,1fr); }
+  .cs-footer-esc   { display: none; }
+  .cs-modal-hero   { height: 170px; }
+}
+
+</style>

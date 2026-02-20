@@ -50,6 +50,39 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
+  // CURSOR CLICK BURST
+  // ==========================================
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) return;
+
+    // Spawn 8 particles in a burst on click
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.className = 'cursor-trail';
+
+        const angle  = (i / 8) * Math.PI * 2;
+        const radius = Math.random() * 30 + 15;
+        const size   = Math.random() * 6 + 4;
+        const color  = ['#b026ff', '#d46eff', '#fff'][Math.floor(Math.random() * 3)];
+
+        particle.style.cssText = `
+          left: ${e.clientX + Math.cos(angle) * radius}px;
+          top:  ${e.clientY + Math.sin(angle) * radius}px;
+          width:  ${size}px;
+          height: ${size}px;
+          background: ${color};
+          box-shadow: 0 0 ${size * 3}px ${color};
+          animation-duration: 0.7s;
+        `;
+
+        document.body.appendChild(particle);
+        particle.addEventListener('animationend', () => particle.remove());
+      }, i * 30);
+    }
+  });
+
+  // ==========================================
   // EDUCATION BENTO — tilt effect on hover
   // ==========================================
   document.querySelectorAll('.bento-card').forEach(card => {
@@ -82,11 +115,64 @@ document.addEventListener('DOMContentLoaded', () => {
   let mouseX = 0, mouseY = 0;
   let followerX = 0, followerY = 0;
 
+ // ==========================================
+  // CURSOR TRAIL PARTICLES
+  // ==========================================
+  const trailColors = ['#b026ff', '#d46eff', '#8b00cc', '#ffffff'];
+  let trailCounter  = 0;
+  let lastTrailX    = 0;
+  let lastTrailY    = 0;
+
+  function spawnTrailParticle(x, y) {
+    // Only spawn every 3 pixels of movement to avoid spam
+    const dist = Math.hypot(x - lastTrailX, y - lastTrailY);
+    if (dist < 6) return;
+    lastTrailX = x;
+    lastTrailY = y;
+
+    const particle = document.createElement('div');
+    particle.className = 'cursor-trail';
+
+    // Vary size: small dots mostly, occasional bigger spark
+    trailCounter++;
+    const isSpark = trailCounter % 5 === 0;
+    const size    = isSpark
+      ? Math.random() * 8 + 6     // 6–14px spark
+      : Math.random() * 4 + 2;    // 2–6px dot
+
+    // Random color from accent palette
+    const color = trailColors[Math.floor(Math.random() * trailColors.length)];
+
+    // Slight random offset so trail feels organic, not perfectly centered
+    const offsetX = (Math.random() - 0.5) * 10;
+    const offsetY = (Math.random() - 0.5) * 10;
+
+    particle.style.cssText = `
+      left: ${x + offsetX}px;
+      top:  ${y + offsetY}px;
+      width:  ${size}px;
+      height: ${size}px;
+      background: ${color};
+      box-shadow: 0 0 ${size * 2}px ${color};
+      animation-duration: ${isSpark ? '0.8s' : '0.5s'};
+    `;
+
+    document.body.appendChild(particle);
+
+    // Remove from DOM after animation ends
+    particle.addEventListener('animationend', () => particle.remove());
+  }
+
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     cursorEl.style.left = `${mouseX}px`;
     cursorEl.style.top  = `${mouseY}px`;
+
+    // Only spawn trail on desktop
+    if (window.innerWidth > 768) {
+      spawnTrailParticle(mouseX, mouseY);
+    }
   });
 
   function animateCursor() {
