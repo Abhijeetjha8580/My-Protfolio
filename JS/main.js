@@ -273,24 +273,48 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // CONTACT FORM
   // ==========================================
-  const form       = document.getElementById('contactForm');
-  const successMsg = document.getElementById('formSuccess');
-  const submitBtn  = form?.querySelector('.btn-submit');
+ const form       = document.getElementById('contactForm');
+const successMsg = document.getElementById('formSuccess');
+const submitBtn  = form?.querySelector('.btn-submit');
 
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = '<span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>';
-    submitBtn.disabled = true;
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    setTimeout(() => {
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'SENDING...';
+  submitBtn.disabled = true;
+
+  const formData = new FormData(form);
+  const object   = Object.fromEntries(formData);
+  const json     = JSON.stringify(object);
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: json
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
       submitBtn.textContent = originalText;
       submitBtn.disabled = false;
       successMsg?.classList.add('visible');
       form.reset();
       setTimeout(() => successMsg?.classList.remove('visible'), 4000);
-    }, 1500);
-  });
+    } else {
+      submitBtn.textContent = 'FAILED — TRY AGAIN';
+      submitBtn.disabled = false;
+    }
+  } catch (error) {
+    submitBtn.textContent = 'ERROR — TRY AGAIN';
+    submitBtn.disabled = false;
+  }
+});
 
   // ==========================================
   // SMOOTH SCROLL
